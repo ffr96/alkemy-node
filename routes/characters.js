@@ -36,7 +36,7 @@ router.get('/', async (req, res, next) => {
     });
     res.json(characters);
   } catch (e) {
-    next('unexpected');
+    next(e.name);
   }
 });
 
@@ -83,12 +83,12 @@ router.post('/', async (req, res, next) => {
  * Deletes a character by id.
  */
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req, res, next) => {
   try {
     await Character.destroy({ where: { id: req.params.id } });
     res.json({ message: `Successfully deleted ${req.params.id}` });
   } catch (e) {
-    res.status(400).json({ message: 'Error while deleting' });
+    next(e.name);
   }
 });
 
@@ -111,15 +111,21 @@ router.delete('/', async (req, res) => {
  * it will be set as null.
  */
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res, next) => {
   const character = await Character.findByPk(req.params.id);
+  let movie = [];
+  if (req.body.movies) {
+    movie = await Movie.findAll({ where: { title: req.body.movies } });
+  }
   if (character) {
     try {
-      character.name = req.body.name;
-      await character.save();
-      res.json(character);
+      character.set(req.body);
+      if (movie.length > 0) {
+        await character.setMovies(movie);
+      }
+      res.json(await character.save());
     } catch (e) {
-      res.status(400).json({ message: 'Invalid data' });
+      next(e.name);
     }
   } else {
     res.sendStatus(404);
