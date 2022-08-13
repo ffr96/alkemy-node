@@ -12,7 +12,7 @@ Movie.belongsToMany(Genre, { through: 'genresmovies' });
 Character.sync({ alter: true });
 Genre.sync({ alter: true });
 Movie.sync({ alter: true });
-User.sync();
+User.sync({ alter: true });
 sequelize.sync();
 
 module.exports = { Character, Movie, Genre, User };

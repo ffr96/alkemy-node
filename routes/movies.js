@@ -70,11 +70,11 @@ router.post('/', async (req, res, next) => {
       });
     }
     if (req.body.genre) {
-      const genre = await Genre.findAll({
-        where: { name: { [Op.in]: req.body.genre } },
-      });
-
-      genre.map((g) => {
+      (
+        await Genre.findAll({
+          where: { name: { [Op.in]: req.body.genre } },
+        })
+      ).map((g) => {
         genresID.push(g.id);
         genresName.push(g.name);
       });
@@ -118,6 +118,8 @@ router.post('/', async (req, res, next) => {
  */
 
 router.put('/:id', async (req, res, next) => {
+  if (!Number(req.params.id)) return next('invalid');
+
   const movie = await Movie.findByPk(req.params.id);
   let character = [];
   let genresID = []; // genres ID that EXIST on the DB
@@ -130,11 +132,12 @@ router.put('/:id', async (req, res, next) => {
       });
     }
     if (req.body.genre) {
-      const genre = await Genre.findAll({
-        where: { name: { [Op.in]: req.body.genre } },
-        raw: true,
-      });
-      genre.map((g) => {
+      (
+        await Genre.findAll({
+          where: { name: { [Op.in]: req.body.genre } },
+          raw: true,
+        })
+      ).map((g) => {
         genresID.push(g.id);
         genresName.push(g.name);
       });
@@ -166,6 +169,18 @@ router.put('/:id', async (req, res, next) => {
     } catch (e) {
       next(e.name);
     }
+  } else {
+    res.sendStatus(404);
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  if (!Number(req.params.id)) return next('invalid');
+
+  const movie = await Movie.findByPk(req.params.id);
+  if (movie) {
+    await movie.destroy();
+    res.sendStatus(200);
   } else {
     res.sendStatus(404);
   }

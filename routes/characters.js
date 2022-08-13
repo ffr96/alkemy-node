@@ -44,7 +44,9 @@ router.get('/', async (req, res, next) => {
  * Finds a character by id.
  */
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req, res, next) => {
+  if (!Number(req.params.id)) return next('invalid');
+
   const character = await Character.findByPk(req.params.id, {
     include: {
       model: Movie,
@@ -65,10 +67,10 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res, next) => {
   let movie = [];
-  if (req.body.movies) {
-    movie = await Movie.findAll({ where: { title: req.body.movies } });
-  }
   try {
+    if (req.body.movies) {
+      movie = await Movie.findAll({ where: { title: req.body.movies } });
+    }
     let character = await Character.create(req.body);
     if (movie.length > 0) {
       character = await character.addMovie(movie);
@@ -112,6 +114,8 @@ router.delete('/', async (req, res) => {
  */
 
 router.put('/:id', async (req, res, next) => {
+  if (!Number(req.params.id)) return next('invalid');
+
   const character = await Character.findByPk(req.params.id);
   let movie = [];
   if (req.body.movies) {

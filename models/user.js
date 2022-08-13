@@ -11,6 +11,10 @@ User.init(
       autoIncrement: true,
       allowNull: false,
     },
+    email: {
+      type: DataTypes.TEXT,
+      unique: true,
+    },
     username: {
       type: DataTypes.TEXT,
       unique: true,
