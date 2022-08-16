@@ -54,13 +54,13 @@ The app can be tested directly by:
 2. create an `.env`file with `DB_URL`, `SECRET` and `PORT`.
 3. run `npm run dev`.
 
-# Documentation on [POSTMAN](https://documenter.getpostman.com/view/22824785/VUjTmPey)
+### Documentation on [POSTMAN](https://documenter.getpostman.com/view/22824785/VUjTmPey)
 
 Some _examples_ might be off but parameters/routes/etc should be fine.
 
-##########################
+---
 
-### Las librerías utilizadas para el challenge son:
+## Las librerías utilizadas para el challenge son:
 
 - Express (obligatorio)
 - Sequelize (obligatorio)
