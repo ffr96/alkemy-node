@@ -8,23 +8,15 @@ const MoviesCharacters = require('./moviescharacters');
 
 Movie.belongsToMany(Character, {
   through: MoviesCharacters,
-  onDelete: 'CASCADE',
-  hooks: true,
 });
 Character.belongsToMany(Movie, {
   through: MoviesCharacters,
-  onDelete: 'CASCADE',
-  hooks: true,
 });
 Genre.belongsToMany(Movie, {
   through: GenresMovies,
-  onDelete: 'CASCADE',
-  hooks: true,
 });
 Movie.belongsToMany(Genre, {
   through: GenresMovies,
-  onDelete: 'CASCADE',
-  hooks: true,
 });
 
 // Now migrations take care of updating the sequelize models.

@@ -99,20 +99,6 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 /**
- * Deletes all the characters. This action doesn't drop the table, so it will be
- * still accessible after.
- */
-
-router.delete('/', async (req, res) => {
-  try {
-    await Character.destroy({ truncate: true });
-    res.sendStatus(200);
-  } catch (e) {
-    res.status(400).json({ message: 'Unable to delete all rows' });
-  }
-});
-
-/**
  * Updates a character by id. If the film provided doesn't exist in the database
  * it will be set as null.
  */

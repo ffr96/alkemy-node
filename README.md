@@ -54,6 +54,10 @@ The app can be tested directly by:
 2. create an `.env`file with `DB_URL`, `SECRET` and `PORT`.
 3. run `npm run dev`.
 
+# Documentation on [POSTMAN](https://documenter.getpostman.com/view/22824785/VUjTmPey)
+
+Some _examples_ might be off but parameters/routes/etc should be fine.
+
 ##########################
 
 ### Las librerías utilizadas para el challenge son:
@@ -107,3 +111,7 @@ La aplicación puede ser testeada directamente:
 1. instalar dependencias `npm install`.
 2. crear un archivo `.env`con los valores `DB_URL`, `SECRET` y `PORT`.
 3. iniciar con `npm run dev`.
+
+# Documentación en [POSTMAN](https://documenter.getpostman.com/view/22824785/VUjTmPey)
+
+_Algunos_ ejemplos están incorrectos pero los parámetros/rutas/etc deberían ser correctos.
