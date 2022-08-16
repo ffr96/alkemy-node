@@ -2,6 +2,9 @@
 
 Repository for _Alkemy's Node backend challenge_.
 
+Backend/db is currently hosted at https://alkemy-be.herokuapp.com/
+There's more info about endpoints below on Documentation.
+
 ### The libraries used for the challenge are:
 
 - Express (requested)
@@ -59,6 +62,9 @@ The app can be tested directly by:
 Some _examples_ might be off but parameters/routes/etc should be fine.
 
 ---
+
+El backend/db se encuentra hosteado en la dirección https://alkemy-be.herokuapp.com/
+Hay más info sobre los endpoints y las rutas en la parte de Documentación
 
 ## Las librerías utilizadas para el challenge son:
 
