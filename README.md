@@ -9,6 +9,8 @@ Repository for _Alkemy's Node backend challenge_.
 - bcrypt
 - dotenv
 - jsonwebtoken
+- nodemailer
+- umzug (for migrations)
 - nodemon (dev dependecy)
 
 Structured like so:
@@ -18,6 +20,8 @@ app
 ├── utilities
 │   └── config
 |       dbcon
+|       doRollback
+|
 ├── routes
 │   └── characters
 |       genre
@@ -32,13 +36,16 @@ app
 |        genre
 |        movie
 |        user
+|        moviescharacters
+|        genresmovies
+|
 ├── mdw
 |   └── tokenValidator
 |       errorHandler
 |
 └── migrations
-      └── ...
-          ...
+      └── 2022...
+          2022...
 ```
 
 The app can be tested directly by:
@@ -56,8 +63,9 @@ The app can be tested directly by:
 - bcrypt
 - dotenv
 - jsonwebtoken
-- nodemon (dev dependecy para testeo)
 - nodemailer
+- umzug (para migración)
+- nodemon (dev dependecy para testeo)
 
 Estructura del código:
 
@@ -66,6 +74,8 @@ app
 ├── utilities
 │   └── config
 |       dbcon
+|       doRollback
+|
 ├── routes
 │   └── characters
 |       genre
@@ -80,13 +90,16 @@ app
 |        genre
 |        movie
 |        user
+|        moviescharacters
+|        genresmovies
+|
 ├── mdw
 |   └── tokenValidator
 |       errorHandler
 |
 └── migrations
-      └── ...
-          ...
+      └── 2022...
+          2022...
 ```
 
 La aplicación puede ser testeada directamente:

@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.get('/', async (req, res, next) => {
   const where = {};
-  const movieWhere = {};
+  let movieWhere = undefined;
 
   if (req.query.name) {
     where.name = {
@@ -20,18 +20,20 @@ router.get('/', async (req, res, next) => {
     where.age = req.query.age;
   }
   if (req.query.movies) {
+    movieWhere = {};
     movieWhere.id = req.query.movies;
   }
 
   try {
     const characters = await Character.findAll({
-      attributes: ['name', 'image'],
-      include: {
-        model: Movie,
-        attributes: { exclude: ['id'] },
-        where: movieWhere,
-        through: { attributes: [] },
-      },
+      attributes: ['name', 'image', 'id'],
+      include: req.query.movies
+        ? {
+            model: Movie,
+            where: movieWhere,
+            through: { attributes: [] },
+          }
+        : undefined,
       where,
     });
     res.json(characters);
@@ -77,6 +79,7 @@ router.post('/', async (req, res, next) => {
     }
     res.json(character);
   } catch (e) {
+    console.log(e);
     next(e.name);
   }
 });
@@ -90,6 +93,7 @@ router.delete('/:id', async (req, res, next) => {
     await Character.destroy({ where: { id: req.params.id } });
     res.json({ message: `Successfully deleted ${req.params.id}` });
   } catch (e) {
+    console.log(e);
     next(e.name);
   }
 });
@@ -129,6 +133,7 @@ router.put('/:id', async (req, res, next) => {
       }
       res.json(await character.save());
     } catch (e) {
+      console.log(e);
       next(e.name);
     }
   } else {

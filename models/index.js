@@ -2,17 +2,37 @@ const Genre = require('./genre');
 const Character = require('./character');
 const Movie = require('./movie');
 const User = require('./user');
-const { sequelize } = require('../utilities/dbcon');
+const GenresMovies = require('./genresmovies');
+const MoviesCharacters = require('./moviescharacters');
+//const { sequelize } = require('../utilities/dbcon');
 
-Movie.belongsToMany(Character, { through: 'moviescharacters' });
-Character.belongsToMany(Movie, { through: 'moviescharacters' });
-Genre.belongsToMany(Movie, { through: 'genresmovies' });
-Movie.belongsToMany(Genre, { through: 'genresmovies' });
+Movie.belongsToMany(Character, {
+  through: MoviesCharacters,
+  onDelete: 'CASCADE',
+  hooks: true,
+});
+Character.belongsToMany(Movie, {
+  through: MoviesCharacters,
+  onDelete: 'CASCADE',
+  hooks: true,
+});
+Genre.belongsToMany(Movie, {
+  through: GenresMovies,
+  onDelete: 'CASCADE',
+  hooks: true,
+});
+Movie.belongsToMany(Genre, {
+  through: GenresMovies,
+  onDelete: 'CASCADE',
+  hooks: true,
+});
 
-Character.sync({ alter: true });
-Genre.sync({ alter: true });
-Movie.sync({ alter: true });
-User.sync({ alter: true });
-sequelize.sync();
+// Now migrations take care of updating the sequelize models.
+
+//Character.sync({ alter: true });
+//Genre.sync({ alter: true });
+//Movie.sync({ alter: true });
+//User.sync({ alter: true });
+//sequelize.sync();
 
 module.exports = { Character, Movie, Genre, User };

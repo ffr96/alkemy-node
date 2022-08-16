@@ -4,7 +4,7 @@ const { SECRET } = require('../utilities/config');
 const tokenValidator = (req, _res, next) => {
   const authorization = req.headers.authorization;
 
-  if (authorization && authorization.startsWith('bearer')) {
+  if (authorization && authorization.toLowerCase().startsWith('bearer')) {
     const token = authorization.substring(7);
     const isValidToken = jwt.verify(token, SECRET);
     if (isValidToken) {

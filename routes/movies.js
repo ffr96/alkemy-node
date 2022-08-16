@@ -3,8 +3,9 @@ const { Op } = require('sequelize');
 const { Character, Movie, Genre } = require('../models');
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   const where = {};
+  let whereGenre = undefined;
   let order = [];
 
   if (req.query.title) {
@@ -14,7 +15,8 @@ router.get('/', async (req, res) => {
   }
 
   if (req.query.genre) {
-    where.genre = req.params.genre;
+    whereGenre = {};
+    whereGenre.id = req.query.genre;
   }
 
   if (req.query.order) {
@@ -23,12 +25,19 @@ router.get('/', async (req, res) => {
 
   try {
     const movies = await Movie.findAll({
-      attributes: ['title', 'image', 'released'],
       where,
+      include: req.query.genre
+        ? {
+            model: Genre,
+            where: whereGenre,
+            through: { attributes: [] },
+          }
+        : undefined,
       order,
     });
     res.json(movies);
   } catch (e) {
+    console.log(e);
     next(e.name);
   }
 });
@@ -66,7 +75,7 @@ router.post('/', async (req, res, next) => {
   try {
     if (req.body.characters) {
       characters = await Character.findAll({
-        where: { name: req.body.characters },
+        where: { name: { [Op.in]: req.body.characters } },
       });
     }
     if (req.body.genre) {
@@ -80,7 +89,8 @@ router.post('/', async (req, res, next) => {
       });
     }
     let movies = await Movie.create(req.body);
-    if (characters.length > 0) {
+    console.log(characters);
+    if (characters && characters.length > 0) {
       movies.addCharacter(characters);
     }
 
@@ -126,9 +136,9 @@ router.put('/:id', async (req, res, next) => {
   let genresName = []; // genres names that EXIST on the DB
 
   if (movie) {
-    if (req.body.movies) {
+    if (req.body.characters) {
       character = await Character.findAll({
-        where: { title: req.body.characters },
+        where: { name: req.body.characters },
       });
     }
     if (req.body.genre) {
@@ -158,7 +168,7 @@ router.put('/:id', async (req, res, next) => {
        * Genre doesn't exist, we create it and then
        * we add the relation with this film
        */
-      if (req.body.genre.length > genresName.length) {
+      if (req.body.genre && req.body.genre.length > genresName.length) {
         const genreDif = req.body.genre.filter((g) => !genresName.includes(g));
         genreDif.forEach(async (name) => {
           const gnrToCreate = await Genre.create({ name: name });
